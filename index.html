@@ -109,17 +109,17 @@
     <h1>ODADOZ</h1>
     <p class="subtitle">Všestranná pohybová přípravka 2025<br>Kulturní dům Hradiště, Těrlicko</p>
 
-    <form id="regForm" onsubmit="handleSubmit(event)">
+    <form id="regForm">
         
         <!-- Zájmový útvar -->
         <fieldset>
             <legend>Výběr zájmového útvaru</legend>
             <div class="form-group">
                 <label for="utvar">Zvolte kroužek *</label>
-                <select id="utvar" required>
+                <select id="utvar" name="utvar" required>
                     <option value="">-- Vyberte kroužek --</option>
-                    <option value="pripravka1">Všestranná pohybová přípravka I (2-4 roky s rodičem) - 2000 Kč / 15 lekcí</option>
-                    <option value="pripravka2">Všestranná pohybová přípravka II (od 4 let bez rodiče) - 2200 Kč / 15 lekcí</option>
+                    <option value="Všestranná pohybová přípravka I">Všestranná pohybová přípravka I (2-4 roky s rodičem) - 2000 Kč / 15 lekcí</option>
+                    <option value="Všestranná pohybová přípravka II">Všestranná pohybová přípravka II (od 4 let bez rodiče) - 2200 Kč / 15 lekcí</option>
                 </select>
             </div>
         </fieldset>
@@ -129,28 +129,28 @@
             <legend>Údaje o dítěti</legend>
             <div class="form-group">
                 <label for="diteJmeno">Jméno a příjmení dítěte *</label>
-                <input type="text" id="diteJmeno" required>
+                <input type="text" id="diteJmeno" name="diteJmeno" required>
             </div>
             <div class="form-group">
                 <label for="diteDatumNarozeni">Datum narození dítěte *</label>
-                <input type="date" id="diteDatumNarozeni" required>
+                <input type="date" id="diteDatumNarozeni" name="diteDatumNarozeni" required>
             </div>
             <div class="form-group">
                 <label for="diteRodneCislo">Rodné číslo dítěte (bez lomítka) *</label>
-                <input type="text" id="diteRodneCislo" placeholder="např. 2005123456" required pattern="\d{9,10}">
+                <input type="text" id="diteRodneCislo" name="diteRodneCislo" placeholder="např. 2005123456" required pattern="\d{9,10}">
                 <span class="note">Povinné kvůli evidenci a úrazovému pojištění.</span>
             </div>
             <div class="form-group">
                 <label for="diteAdresa">Adresa trvalého bydliště dítěte *</label>
-                <input type="text" id="diteAdresa" required>
+                <input type="text" id="diteAdresa" name="diteAdresa" required>
             </div>
             <div class="form-group">
                 <label for="alergie">Alergie (pokud ano, uveďte druh) *</label>
-                <input type="text" id="alergie" value="Ne" required>
+                <input type="text" id="alergie" name="alergie" value="Ne" required>
             </div>
             <div class="form-group">
                 <label for="omezeni">Zdravotní omezení (bojí se výšek, neumí plavat, úrazy apod.) *</label>
-                <input type="text" id="omezeni" value="Žádné" required>
+                <input type="text" id="omezeni" name="omezeni" value="Žádné" required>
             </div>
         </fieldset>
 
@@ -159,19 +159,19 @@
             <legend>Fakturační údaje (Zákonný zástupce)</legend>
             <div class="form-group">
                 <label for="zakonnyZastupce">Jméno a příjmení zákonného zástupce *</label>
-                <input type="text" id="zakonnyZastupce" required>
+                <input type="text" id="zakonnyZastupce" name="zakonnyZastupce" required>
             </div>
             <div class="form-group">
                 <label for="fakturaAdresa">Fakturační adresa (Ulice, č.p., Město, PSČ) *</label>
-                <input type="text" id="fakturaAdresa" placeholder="Např. Hradišťská 50, Těrlicko, 735 42" required>
+                <input type="text" id="fakturaAdresa" name="fakturaAdresa" placeholder="Např. Hradišťská 50, Těrlicko, 735 42" required>
             </div>
             <div class="form-group">
                 <label for="email">Váš e-mail (pro doručení platebních údajů a faktury) *</label>
-                <input type="email" id="email" required>
+                <input type="email" id="email" name="email" required>
             </div>
             <div class="form-group">
                 <label for="telefon">Telefon na zákonného zástupce *</label>
-                <input type="tel" id="telefon" placeholder="+420..." required>
+                <input type="tel" id="telefon" name="telefon" placeholder="+420..." required>
             </div>
         </fieldset>
 
@@ -180,11 +180,11 @@
             <legend>Vyzvedávání a poznámky</legend>
             <div class="form-group">
                 <label for="vyzvedavani">Osoby oprávněné k vyzvednutí dítěte (Jméno, adresa, tel.)</label>
-                <textarea id="vyzvedavani"></textarea>
+                <textarea id="vyzvedavani" name="vyzvedavani"></textarea>
             </div>
             <div class="form-group">
                 <label for="poznamky">Poznámky</label>
-                <textarea id="poznamky"></textarea>
+                <textarea id="poznamky" name="poznamky"></textarea>
             </div>
         </fieldset>
 
@@ -213,29 +213,41 @@
             </div>
         </fieldset>
 
-        <button type="submit">Odeslat závaznou přihlášku</button>
+        <button type="submit" id="submitBtn">Odeslat závaznou přihlášku</button>
     </form>
 </div>
 
 <script>
     document.getElementById('regForm').addEventListener('submit', function(e) {
-    e.preventDefault();
+        e.preventDefault();
 
-    // Sem pak vložíš URL adresu tvého Google Apps Scriptu (viz Krok 2)
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbySZkvPhCZZILm8U6ZOybplRcFQEd3j9RVaeEGIRbNwp0ap9FGDAFuhBVDPris-jm6bGg/exec';
+        const btn = document.getElementById('submitBtn');
+        btn.disabled = true;
+        btn.textContent = 'Odesílám...';
 
-    const formData = new FormData(this);
-    
-    fetch(scriptURL, { method: 'POST', body: formData })
-        .then(response => {
+        // Tvoje URL adresa Google Apps Scriptu
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbySZkvPhCZZILm8U6ZOybplRcFQEd3j9RVaeEGIRbNwp0ap9FGDAFuhBVDPris-jm6bGg/exec';
+
+        const formData = new FormData(this);
+        
+        fetch(scriptURL, { 
+            method: 'POST', 
+            body: formData,
+            mode: 'no-cors' // Důležité pro Google Apps Script, aby to prohlížeč neblokoval kvůli CORS
+        })
+        .then(() => {
             alert('Děkujeme za přihlášku! Údaje byly úspěšně odeslány a na váš e-mail brzy dorazí platební instrukce.');
             document.getElementById('regForm').reset();
+            btn.disabled = false;
+            btn.textContent = 'Odeslat závaznou přihlášku';
         })
         .catch(error => {
-            console.error('Chyba!', error.message);
+            console.error('Chyba!', error);
             alert('Odeslání se nezdařilo. Zkuste to prosím znovu.');
+            btn.disabled = false;
+            btn.textContent = 'Odeslat závaznou přihlášku';
         });
-});
+    });
 </script>
 
 </body>
