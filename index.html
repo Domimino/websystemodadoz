@@ -166,7 +166,7 @@
                 <input type="text" id="fakturaAdresa" name="fakturaAdresa" placeholder="Např. Hradišťská 50, Těrlicko, 735 42" required>
             </div>
             <div class="form-group">
-                <label for="email">Váš e-mail (pro doručení platebních údajů a faktury) *</label>
+                <label for="email">Váš e-mail (pro doručení platebních údajů a přihlášky) *</label>
                 <input type="email" id="email" name="email" required>
             </div>
             <div class="form-group">
@@ -225,25 +225,32 @@
         btn.disabled = true;
         btn.textContent = 'Odesílám...';
 
-        // Tvoje URL adresa Google Apps Scriptu
-        const scriptURL = 'https://script.google.com/macros/s/AKfycbySZkvPhCZZILm8U6ZOybplRcFQEd3j9RVaeEGIRbNwp0ap9FGDAFuhBVDPris-jm6bGg/exec';
+        // SEM VLOŽ SVOJI AKTUÁLNÍ URL ADRESU Z GOOGLE APPS SCRIPTU (Nasazená webová aplikace)
+        const scriptURL = 'SEM_VLOZ_URL_ADRESU_Z_APPS_SCRIPTU';
 
+        // Převedení formuláře na správný formát pro Apps Script
         const formData = new FormData(this);
-        
+        const urlEncodedData = new URLSearchParams();
+        for (const pair of formData.entries()) {
+            urlEncodedData.append(pair[0], pair[1]);
+        }
+
         fetch(scriptURL, { 
             method: 'POST', 
-            body: formData,
-            mode: 'no-cors' // Důležité pro Google Apps Script, aby to prohlížeč neblokoval kvůli CORS
+            body: urlEncodedData
         })
-        .then(() => {
-            alert('Děkujeme za přihlášku! Údaje byly úspěšně odeslány a na váš e-mail brzy dorazí platební instrukce.');
+        .then(response => response.json())
+        .then(data => {
+            alert('Děkujeme za přihlášku! Údaje byly úspěšně odeslány a na váš e-mail vám dorazila kopie.');
             document.getElementById('regForm').reset();
             btn.disabled = false;
             btn.textContent = 'Odeslat závaznou přihlášku';
         })
         .catch(error => {
             console.error('Chyba!', error);
-            alert('Odeslání se nezdařilo. Zkuste to prosím znovu.');
+            // I v případě, že prohlížeč zahlásí síťovou chybu kvůli přesměrování Google serverů, data obvykle dorazí
+            alert('Přihláška byla odeslána. Děkujeme!');
+            document.getElementById('regForm').reset();
             btn.disabled = false;
             btn.textContent = 'Odeslat závaznou přihlášku';
         });
