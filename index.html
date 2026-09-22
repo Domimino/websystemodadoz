@@ -110,7 +110,7 @@
     <p class="subtitle">Všestranná pohybová přípravka 2025<br>Kulturní dům Hradiště, Těrlicko</p>
 
     <form id="regForm">
-        
+
         <!-- Zájmový útvar -->
         <fieldset>
             <legend>Výběr zájmového útvaru</legend>
@@ -166,7 +166,7 @@
                 <input type="text" id="fakturaAdresa" name="fakturaAdresa" placeholder="Např. Hradišťská 50, Těrlicko, 735 42" required>
             </div>
             <div class="form-group">
-                <label for="email">Váš e-mail (pro doručení platebních údajů a přihlášky) *</label>
+                <label for="email">Váš e-mail (pro doručení platebních údajů a faktury) *</label>
                 <input type="email" id="email" name="email" required>
             </div>
             <div class="form-group">
@@ -192,23 +192,23 @@
         <fieldset>
             <legend>Souhlasy a prohlášení</legend>
             <div class="checkbox-group">
-                <input type="checkbox" id="zdravi" required>
+                <input type="checkbox" id="zdravi" name="souhlasZdravi" required>
                 <label for="zdravi">Čestně prohlašuji, že dítě je zdravotně způsobilé a absolvuje pravidelné prohlídky. *</label>
             </div>
             <div class="checkbox-group">
-                <input type="checkbox" id="gdpr" required>
+                <input type="checkbox" id="gdpr" name="souhlasGdpr" required>
                 <label for="gdpr">Souhlasím se zpracováním osobních údajů (GDPR). *</label>
             </div>
             <div class="checkbox-group">
-                <input type="checkbox" id="zraneni" required>
+                <input type="checkbox" id="zraneni" name="souhlasZraneni" required>
                 <label for="zraneni">Souhlasím s poskytnutím první pomoci a ošetření v případě zranění. *</label>
             </div>
             <div class="checkbox-group">
-                <input type="checkbox" id="foto1">
+                <input type="checkbox" id="foto1" name="souhlasFotoIG">
                 <label for="foto1">Souhlasím se zveřejněním podobizny dítěte na IG @odadoz_cz a FB ODADOZ (na 3 roky).</label>
             </div>
             <div class="checkbox-group">
-                <input type="checkbox" id="foto2">
+                <input type="checkbox" id="foto2" name="souhlasFotoJmeno">
                 <label for="foto2">Souhlasím se zveřejněním obličeje a křestního jména v souvislosti s výsledky/akcemi.</label>
             </div>
         </fieldset>
@@ -225,32 +225,25 @@
         btn.disabled = true;
         btn.textContent = 'Odesílám...';
 
-        // SEM VLOŽ SVOJI AKTUÁLNÍ URL ADRESU Z GOOGLE APPS SCRIPTU (Nasazená webová aplikace)
-        const scriptURL = 'SEM_VLOZ_URL_ADRESU_Z_APPS_SCRIPTU';
+        // Tvoje URL adresa Google Apps Scriptu
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbySZkvPhCZZILm8U6ZOybplRcFQEd3j9RVaeEGIRbNwp0ap9FGDAFuhBVDPris-jm6bGg/exec';
 
-        // Převedení formuláře na správný formát pro Apps Script
         const formData = new FormData(this);
-        const urlEncodedData = new URLSearchParams();
-        for (const pair of formData.entries()) {
-            urlEncodedData.append(pair[0], pair[1]);
-        }
 
-        fetch(scriptURL, { 
-            method: 'POST', 
-            body: urlEncodedData
+        fetch(scriptURL, {
+            method: 'POST',
+            body: formData,
+            mode: 'no-cors' // Důležité pro Google Apps Script, aby to prohlížeč neblokoval kvůli CORS
         })
-        .then(response => response.json())
-        .then(data => {
-            alert('Děkujeme za přihlášku! Údaje byly úspěšně odeslány a na váš e-mail vám dorazila kopie.');
+        .then(() => {
+            alert('Děkujeme za přihlášku! Údaje byly úspěšně odeslány a na váš e-mail brzy dorazí platební instrukce.');
             document.getElementById('regForm').reset();
             btn.disabled = false;
             btn.textContent = 'Odeslat závaznou přihlášku';
         })
         .catch(error => {
             console.error('Chyba!', error);
-            // I v případě, že prohlížeč zahlásí síťovou chybu kvůli přesměrování Google serverů, data obvykle dorazí
-            alert('Přihláška byla odeslána. Děkujeme!');
-            document.getElementById('regForm').reset();
+            alert('Odeslání se nezdařilo. Zkuste to prosím znovu.');
             btn.disabled = false;
             btn.textContent = 'Odeslat závaznou přihlášku';
         });
